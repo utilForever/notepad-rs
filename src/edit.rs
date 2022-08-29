@@ -58,13 +58,18 @@ pub mod find {
         }
     }
 
-    pub fn find_texts_in_file(src: &str, pattern: &str) -> Option<Vec<FindResult>> {
+    // Disclaimer: I am not sure about capitalized Cyrill characters
+    pub fn find(src: &str, pattern: &str) -> Option<Vec<FindResult>> {
+        find_match_case(src.to_ascii_lowercase().as_str(), pattern.to_ascii_lowercase().as_str())
+    }
+
+    pub fn find_match_case(src: &str, pattern: &str) -> Option<Vec<FindResult>> {
         let lines: Vec<&str> = src.split("\n").collect();
         let table = prefix_suffix_max_len_table(pattern);
 
         let mut matching: Vec<FindResult> = Vec::new();
 
-        let i = 0;
+        let mut i = 1;
         for line in lines {
             match kmp(line, pattern, &table) {
                 Some(line_res) => {
@@ -78,6 +83,7 @@ pub mod find {
                 }
                 None => continue
             }
+            i += 1;
         }
 
         if matching.is_empty() {
@@ -86,4 +92,8 @@ pub mod find {
             Some(matching)
         }
     }
+
+    pub fn find_words(src: &str, pattern: &str) {}
+
+    pub fn find_regex(src: &str, pattern: &str) {}
 }
