@@ -9,6 +9,12 @@ pub mod find {
         end: usize,
     }
 
+    impl PartialEq for FindResult {
+        fn eq(&self, other: &Self) -> bool {
+            self.line == other.line && self.start == other.start && self.end == other.end
+        }
+    }
+
     fn prefix_suffix_max_len_table(pattern: &Vec<char>) -> Vec<usize> {
         // String matching should consider Unicode characters
         let pattern_size = pattern.len();
