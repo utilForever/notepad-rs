@@ -1,57 +1,47 @@
 mod edit;
 
 #[cfg(test)]
-mod tests {
+mod test {
+    // TODO: Complete unit test codes
     use super::edit::find;
-
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
+    use super::edit::find::FindResult;
 
     #[test]
     fn find_match_case_works() {
-        println!("===find_match_case_works===");
-        let v = find::find("    #[test]\n
-    fn it_works() {\n
+        let text = "    #[test]
+fn it_works() {
         let result = 2 + 2;\n
         assert_eq!(result, 4);\n
-    }", "result", true, false, false);
-        for i in v {
-            println!("{:?}", i)
-        }
+    }";
+        let v = find::find(text, "result", true, false, false);
+        assert_eq!(v, vec![FindResult { line: 1, start: 13, end: 19 },
+                           FindResult { line: 2, start: 20, end: 26 }]);
     }
 
     #[test]
     fn normal_find_works() {
-        println!("===normal_find_works===");
         let v = find::find("    #[test]\n
     fn it_works() {\n
         let result = 2 + 2;\n
         assert_eq!(result, 4);\n
     }", "ResUlT", false, false, false);
-        for i in v {
-            println!("{:?}", i)
-        }
+
+        assert_eq!(v, vec![FindResult { line: 1, start: 13, end: 19 },
+                           FindResult { line: 2, start: 20, end: 26 }]);
     }
 
     #[test]
     fn normal_find_with_korean_works() {
-        println!("===normal_find_with_korean_works===");
         let v = find::find("안녕하세요.\n\
     제 이름은 jeff park입니다.", "JefF", false, false, false);
-        for i in v {
-            println!("{:?}", i)
-        }
+
+        assert_eq!(v, vec![FindResult { line: 1, start: 7, end: 11 }]);
     }
 
     #[test]
     fn find_words_works() {
-        println!("===find_words_works===");
         let v = find::find("find find_find", "find", false, true, false);
-        for i in v {
-            println!("{:?}", i)
-        }
+
+        assert_eq!(v, vec![FindResult { line: 1, start: 1, end: 5 }]);
     }
 }
