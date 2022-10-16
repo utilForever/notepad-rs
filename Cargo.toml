@@ -8,6 +8,9 @@ description = "A cross-platform, re-implementation of Notepad++ written in Rust"
 readme = "README.md"
 license = "MIT"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "notepad"
+path = "notepad_gui/src/main.rs"
 
-[dependencies]
+[workspace]
+members = [ "notepad_gui" ]
